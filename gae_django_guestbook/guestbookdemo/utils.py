@@ -12,19 +12,13 @@ from guestbookdemo.appconstants import AppConstants
 class SendEmail(View):
 
     def get(self, request, *args, **kwargs):
-        logging.warning("SendEmail - post")
-
-        self.send_email()
+        useremail = self.request.GET.get('useremail')
+        self.send_email(useremail)
 
         return HttpResponse('Email has been sent')
 
-    def send_email(self):
-        user = users.get_current_user()
-        if user is not None:
-            logging.warning("SendEmail - send_email")
-            username = user.nickname()
-            useremail = user.email()
-
+    def send_email(self, useremail):
+        if useremail is not None:
             message = mail.EmailMessage()
             message.sender = useremail
             message.to = AppConstants.get_default_receiver_email()
@@ -35,6 +29,6 @@ class SendEmail(View):
                 A new greeting is written by %s, please verify this content at
                     http://upheld-quasar-641.appspot.com
 
-                """ % username
+                """ % useremail
 
             message.send()
