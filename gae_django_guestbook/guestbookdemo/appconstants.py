@@ -3,6 +3,7 @@ __author__ = 'NhatHV'
 DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
 DEFAULT_CACHE_TIME = 3600 * 24 * 30
 DEFAULT_NUMBER_OF_GREETING = 10
+DEFAULT_RECEIVER_EMAIL = 'nhathv.dev@gmail.com'
 
 class AppConstants:
 
@@ -17,3 +18,7 @@ class AppConstants:
     @classmethod
     def get_default_number_of_greeting(cls):
         return DEFAULT_NUMBER_OF_GREETING
+
+    @classmethod
+    def get_default_receiver_email(cls):
+        return DEFAULT_RECEIVER_EMAIL
