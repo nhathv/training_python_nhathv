@@ -37,20 +37,12 @@ class Guestbook:
     def put_greeting_with_data(cls, guestbook_name, greeting_author, greeting_content):
         guestbook_key = Greeting.get_key_from_name(guestbook_name)
 
-        @ndb.transactional
-        def put_greeting_to_db():
-            greeting = Greeting(parent=guestbook_key)
-            greeting.author = greeting_author
-            greeting.content = greeting_content
+        greeting = Greeting(parent=guestbook_key)
+        greeting.author = greeting_author
+        greeting.content = greeting_content
 
-            # save object
-            greeting.put()
+        # save object
+        greeting.put()
 
-            # clear cache
-            memcache.delete('%s:greetings' % guestbook_name)
-
-            return greeting
-
-        new_greeting = put_greeting_to_db()
-
-        return new_greeting
+        # clear cache
+        memcache.delete('%s:greetings' % guestbook_name)
