@@ -65,9 +65,14 @@ class SignGuestbook(MainPageView, FormView):
     def form_valid(self, form):
         new_greeting = form.save_greeting()
         if new_greeting is not None:
+            if users.get_current_user() is not None:
+                useremail = users.get_current_user().email()
+            else:
+                useremail = "Anonymous"
+
             taskqueue.add(url='/send_email/',
                           method='GET',
-                          params={'useremail': users.get_current_user().email()})
+                          params={'useremail': useremail})
 
         # get guestbook_name
         guestbook_name = form.cleaned_data['guestbook_name']
