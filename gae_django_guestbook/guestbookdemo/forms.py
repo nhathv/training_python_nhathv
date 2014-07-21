@@ -22,9 +22,7 @@ class GreetingForm(forms.Form):
             greeting_author = None
         greeting_content = self.cleaned_data['content']
 
-        new_greeting = Guestbook.put_greeting_with_data(guestbook_name, greeting_author, greeting_content)
-
-        return new_greeting
+        Guestbook.put_greeting_with_data(guestbook_name, greeting_author, greeting_content)
 
 
 class SwitchGuestbookForm(forms.Form):
