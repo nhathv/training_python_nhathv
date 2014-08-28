@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+	<ModulePrefs title="{% block title %}{% endblock %}">
+{% block common_prefs %}
+{% endblock %}
+{% block prefs %}
+{% endblock %}
+	</ModulePrefs>
+	<Content type="html" preferred_height="440"><![CDATA[
+<!DOCTYPE html>
+{% block head %}{% endblock %}
+{% block body %}{% endblock %}
+	]]></Content>
+</Module>

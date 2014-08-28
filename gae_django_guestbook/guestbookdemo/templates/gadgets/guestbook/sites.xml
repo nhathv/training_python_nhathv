@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="Gadget x" />
+    <Require feature="opensocial-0.9" />
+	<Require feature="osapi" />
+    <Content type="html" preferred_height="440"><![CDATA[
+    <!DOCTYPE html>
+<html>
+<head>
+    <title>Dojo guestbook</title>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.10.0/dijit/themes/claro/claro.css" />
+    <link type="text/css" rel="stylesheet" href="{{ origin }}/static/js/guestbook/widget/css/GreetingWidget.css" />
+    <base href="{{origin}}" target="_blank" />
+</head>
+<body>
+<h1>Guestbook</h1>
+<div id="greetingContainer"></div>
+<!-- Configure Dojo -->
+<script>
+    var dojoConfig = (function(){
+        return {
+            async: true,
+            isDebug: true,
+            parseOnLoad : true,
+            packages: [{
+                name: "myGuestbook",
+                location: "{{ origin }}/static/js/guestbook"
+            }],
+            settings: {
+		        csrfToken: 'dummy',
+		        origin: '{{ origin|escapejs }}',
+	}
+        };
+    })();
+</script>
+<div data-dojo-type="guestbook.GuestbookWidget"></div>
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
+<script type="text/javascript">
+    require([
+        "dojo/parser",
+        "dojo/_base/config",
+        "myGuestbook/widget/GuestbookWidget",
+        "dojo/domReady!"
+    ], function(parser, config){
+        if (!config.parseOnLoad) {
+            parser.parse();
+        }
+    });
+</script>
+<br>
+<input id="is_user_admin" value="{{ is_user_admin }}" type="hidden"/>
+<input id="user_login" value="{{ user_login }}" type="hidden"/>
+<br>
+<br>
+<a href="{{ url }}">{{ url_linktext }}</a>
+</body>
+</html>
+]]></Content>
+</Module>

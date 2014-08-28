@@ -27,7 +27,6 @@ define([
 
         postCreate: function () {
             this.inherited(arguments);
-
             this.GreetingStore = new GreetingStore();
 
             // handle event

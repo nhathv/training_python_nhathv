@@ -19,5 +19,7 @@ urlpatterns = patterns('',
         APIGreetingDetail.as_view(),
         name="detail-greeting"),
     #dojo-demo
-    url(r'^dojo/$', views.DojoGuestbook.as_view())
+    url(r'^dojo/$', views.DojoGuestbook.as_view()),
+    #gadget-demo
+    url(r'^gadget/guestbook$', views.GadgetView.as_view(template_name = 'gadgets/guestbook/sites.xml'))
 )

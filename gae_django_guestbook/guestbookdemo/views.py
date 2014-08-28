@@ -3,7 +3,7 @@ import urllib
 from google.appengine.api import users
 from google.appengine.api.labs import taskqueue
 
-from django.views.generic import TemplateView
+from django.views.generic import base, TemplateView
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 
@@ -184,3 +184,30 @@ class DojoGuestbook(TemplateView):
         context['url_linktext'] = url_linktext
 
         return context
+
+
+class GadgetView(base.View, base.TemplateResponseMixin):
+	# template_name = "gadgets/guestbook/sites.xml"
+
+	def get(self, request, **kwargs):
+		res = self.render_to_response(self.get_context_data())
+		res['Content-Type'] = 'application/xml; charset=utf-8'
+
+		if request.GET.get('pseudo') == '1':
+			import re
+			content = res.rendered_content
+			body = re.search(
+				r'<Content [^>]*>.*<\!\[CDATA\[(.*)\]\]>.*</Content>',
+				content, re.S).group(1)
+			self.template_name = 'gadgets/pseudo.html'
+			res = self.render_to_response({'gadget_body': body})
+
+		return res
+
+	def get_context_data(self, **kwargs):
+		origin = self.request.build_absolute_uri('/').rstrip('/')
+		ctx = dict(
+			origin=origin
+			)
+		ctx.update(kwargs)
+		return ctx
