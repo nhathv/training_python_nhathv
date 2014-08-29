@@ -19,8 +19,6 @@ class JSONResponseMixin(object):
 
 	def render_to_response(self, context, **response_kwargs):
 		response = self.get_json_response(self.convert_context_to_json(context),**response_kwargs)
-		response['Access-Control-Allow-Origin'] = '*'
-		response['Access-Control-Allow-Methods'] = "POST, GET, OPTIONS, PUT, DELETE"
 		return response
 
 	def get_json_response(self, content, **httpresponse_kwargs):
@@ -110,10 +108,10 @@ class APIListGreeting(JSONResponseMixin, FormView):
 						  method='GET',
 						  params={'user_email': user_email})
 
-			response =  HttpResponse(status=204)
+			response = HttpResponse(status=204)
 			return response
 		else:
-			response =  HttpResponse(status=404)
+			response = HttpResponse(status=404)
 			return response
 
 # Using method form_invalid for API create Greeting

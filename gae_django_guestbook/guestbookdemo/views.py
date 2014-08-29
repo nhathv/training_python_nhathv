@@ -3,6 +3,7 @@ import urllib
 from google.appengine.api import users
 from google.appengine.api.labs import taskqueue
 
+from django.core.context_processors import csrf
 from django.views.generic import base, TemplateView
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
@@ -207,7 +208,8 @@ class GadgetView(base.View, base.TemplateResponseMixin):
 	def get_context_data(self, **kwargs):
 		origin = self.request.build_absolute_uri('/').rstrip('/')
 		ctx = dict(
-			origin=origin
+			origin=origin,
+			csrf_token=csrf(self.request)
 			)
 		ctx.update(kwargs)
 		return ctx

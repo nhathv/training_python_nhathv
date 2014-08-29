@@ -10,3 +10,9 @@
 [submodule "gae_django_guestbook/static/js/dojo/util"]
 	path = gae_django_guestbook/static/js/dojo/util
 	url = https://github.com/dojo/util
+[submodule "gae_django_guestbook/cors-python"]
+	path = gae_django_guestbook/cors-python
+	url = git@github.com:monsur/cors-python.git
+[submodule "gae_django_guestbook/django-cors-headers"]
+	path = gae_django_guestbook/django-cors-headers
+	url = git@github.com:ottoyiu/django-cors-headers.git

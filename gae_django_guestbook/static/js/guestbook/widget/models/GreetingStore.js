@@ -21,7 +21,6 @@ define([
                     this.store = new JsonRest({
                         target: url,
                         headers: {
-                            "X-Requested-With": null,
                             "X-CSRFToken": _cookie('csrftoken')
                         }
                     });
