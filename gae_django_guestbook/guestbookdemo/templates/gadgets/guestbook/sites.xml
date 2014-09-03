@@ -12,11 +12,12 @@
     <link type="text/css" rel="stylesheet" href="{{ origin }}/static/js/guestbook/widget/css/GreetingWidget.css" />
     <base href="{{origin}}" target="_blank" />
     <script>
-        function setCookie(cname, cvalue, exdays) {
+        function setCookie(domain, cname, cvalue, exdays) {
             var d = new Date();
             d.setTime(d.getTime() + (exdays*24*60*60*1000));
             var expires = "expires="+d.toUTCString();
-            document.cookie = cname + "=" + cvalue + "; " + expires;
+            document.cookie = cname + "=" + cvalue + "; " + expires
+                                +";domain="+domain+";path=/gadget";
         }
 
         function getCookie(cname) {
@@ -32,11 +33,10 @@
             return "";
         }
 
-        function checkCSRFTOKENCookie(csrftoken) {
-            alert(csrftoken);
+        function checkCSRFTOKENCookie(domain, csrftoken) {
             var saved_csrftoken=getCookie("csrftoken");
             if (saved_csrftoken == "" && csrftoken != "" && csrftoken != null) {
-                setCookie("csrftoken", csrftoken, 30);
+                setCookie(domain, "csrftoken", csrftoken, 30);
             }
         }
     </script>
@@ -78,11 +78,13 @@
 </script>
 <br>
 ==== CSRF ====
-{{ csrf_token }}
 <input value="{{ csrf_token }}" id="tmp_csrf_token"/>
+=== ORIGIN ===
+<input value="{{ origin }}" id="tmp_origin"/>
 <script>
     var tmp = document.getElementById("tmp_csrf_token");
-    checkCSRFTOKENCookie(tmp.value);
+    var tmp2 = document.getElementById("tmp_origin");
+    checkCSRFTOKENCookie(tmp2.value, tmp.value);
 </script>
 <br>
 <input id="is_user_admin" value="{{ is_user_admin }}" type="hidden"/>

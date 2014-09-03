@@ -209,7 +209,7 @@ class GadgetView(base.View, base.TemplateResponseMixin):
 		origin = self.request.build_absolute_uri('/').rstrip('/')
 		ctx = dict(
 			origin=origin,
-			csrf_token=csrf(self.request)
+			# csrf_token=csrf(self.request)
 			)
 		ctx.update(kwargs)
 		return ctx

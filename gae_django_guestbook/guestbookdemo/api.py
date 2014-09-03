@@ -114,10 +114,10 @@ class APIListGreeting(JSONResponseMixin, FormView):
 			response = HttpResponse(status=404)
 			return response
 
-# Using method form_invalid for API create Greeting
-def form_invalid(self, form):
-	response =  HttpResponse(status=404)
-	return response
+	# Using method form_invalid for API create Greeting
+	def form_invalid(self, form):
+		response =  HttpResponse(status=404)
+		return response
 
 
 class APIGreetingDetail(JSONResponseMixin, DetailView, FormView, DeletionMixin):
