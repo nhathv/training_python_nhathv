@@ -4,6 +4,7 @@ define([
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetsInTemplateMixin",
+	'dijit/_Container',
 	"dojo/request",
 	"dojo/on",
 	"dojo/dom",
@@ -18,11 +19,14 @@ define([
 	"/static/js/guestbook/widget/SignFormWidget.js",
 	"/static/js/guestbook/widget/models/GreetingStore.js",
 	"dojo/text!./templates/GuestbookWidget.html",
+	"/static/js/common/views/_ListViewMixin.js",
+	"/static/js/guestbook/widget/models/GreetingStoreSingleton.js",
 	"/static/js/guestbook/widget/models/app.js"
-], function(declare, lang, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
+], function(declare, lang, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _Container,
 			request, on, dom, domAttr, domConstruct, domStyle, arrayUtil, router, hash, topic,
-			GreetingWidget, SignFormWidget, GreetingStore, template, appModel){
-	return declare("guestbook.GuestbookWidget", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+			GreetingWidget, SignFormWidget, GreetingStore, template, _ListViewMixin, GreetingStoreSingleton, appModel){
+	return declare("guestbook.GuestbookWidget",
+		[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _Container, _ListViewMixin], {
 		// Our template - important!
 		templateString: template,
 		widgetsInTemplate: true,
@@ -32,7 +36,9 @@ define([
 		guestbookName: "default_guestbook",
 		// store the last requested page so we do not make multiple requests for the same content
 		lastPage: "list",
-
+		autoPaging: 20,
+		store: GreetingStoreSingleton.getDefaultInstance(),
+		
 		model: appModel.getDefaultInstance(),
 
 		postCreate: function () {
@@ -63,11 +69,11 @@ define([
 
 			var thisObj = this;
 			this.model.watch('route', function(name, oldValue, value) {
-				thisObj.render(value);
+				thisObj.renderScreen(value);
 			});
 		},
 
-		render: function(value){
+		renderScreen: function(value){
 			switch (value.screen){
 				case 'list':
 					this.showList();
@@ -116,7 +122,12 @@ define([
 			this.signFormWidget.startup();
 		},
 
-		_showListGreeting: function(guestbookName){
+		fetchItems: function(options) {
+			console.log("fetchItems");
+			return this.store.query({guestbook_name: this.guestbookName}, options);
+		},
+
+		getItemView: function(greeting) {
 			var _isAdmin = "false";
 			var isUserAdminNode = dom.byId("is_user_admin");
 			if (isUserAdminNode){
@@ -130,32 +141,31 @@ define([
 			}
 
 			var _guestbookWidgetParent = this;
+			var data = {
+				id_greeting: greeting.get('id_greeting'),
+				content: greeting.get('content'),
+				date: greeting.get('date')
+			}
+			var greetingWidget = new GreetingWidget(data);
+			// show button delete for admin
+			if (_isAdmin.toLowerCase() == "true"){
+				greetingWidget.setHiddenDeleteNode(false);
+				greetingWidget.setDisabledEditor(false);
+			}
+			// show button edit if author written
+			if (_userLogin == greeting.author){
+				greetingWidget.setDisabledEditor(false);
+			}
+			// set guestbook name
+			greetingWidget.setGuestbookName(this.guestbookName);
+			greetingWidget.setGuestbookParent(_guestbookWidgetParent);
 
-			this.GreetingStore.getListGreeting(guestbookName).then(function(results){
-				var _newDocFrag = document.createDocumentFragment();
-				arrayUtil.forEach(results.greetings, function(greeting){
-					var greetingWidget = new GreetingWidget(greeting);
-					// show button delete for admin
-					if (_isAdmin.toLowerCase() == "true"){
-						greetingWidget.setHiddenDeleteNode(false);
-						greetingWidget.setDisabledEditor(false);
-					}
-					// show button edit if author written
-					if (_userLogin == greeting.author){
-						greetingWidget.setDisabledEditor(false);
-					}
-					// set guestbook name
-					greetingWidget.setGuestbookName(guestbookName);
-					greetingWidget.setGuestbookParent(_guestbookWidgetParent);
+			return greetingWidget;
+		},
 
-					greetingWidget.placeAt(_newDocFrag);
-				});
-				domConstruct.place(_newDocFrag, _guestbookWidgetParent.greetingsContainerNode);
-			}, function(err){
-				console.log(err.message);
-			}, function(progress){
-				console.log(progress);
-			});
+		_showListGreeting: function(guestbookName){
+			this.guestbookName = guestbookName;
+			this.loadItems({forceNew: true});
 		},
 
 		_onclickSwitchBtn: function(){
@@ -170,7 +180,7 @@ define([
 		},
 
 		_removeAllGreeting: function(){
-			this.greetingsContainerNode.innerHTML = "";
+			this.containerNode.innerHTML = "";
 		},
 
 		_setGuestbookNameAttr: function(guestbookName){

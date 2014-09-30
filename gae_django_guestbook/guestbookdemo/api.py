@@ -54,11 +54,21 @@ class APIListGreeting(JSONResponseMixin, FormView):
         greetings_dict = [greeting.to_dict() for greeting in greetings]
 
         data = {}
-        data['greetings'] = greetings_dict
+        # data['greetings'] = greetings_dict
         if next_cursor:
             data['cursor'] = next_cursor.urlsafe()
         data['is_more'] = is_more
         data['guestbook_name'] = guestbook_name
+        # new response
+        data['items'] = greetings_dict
+        data['totalItems'] = len(greetings_dict)
+        data['hasNext'] = is_more
+        data['nextLink'] = None
+        if is_more:
+            data['nextLink'] = "http://abd.com?"+"cursor=" + next_cursor.urlsafe() + "&limit=20"
+        data['hasPrev'] = False
+        data['prevLink'] = ''
+        data['limit'] = 20
 
         return data
 
