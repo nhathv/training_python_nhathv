@@ -43,6 +43,9 @@ define([
 		
 		model: appModel,
 
+		autoPaging: 20,
+		store: GreetingStoreSingleton.getDefaultInstance(),
+
 		postCreate: function () {
 			this.inherited(arguments);
 
