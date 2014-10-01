@@ -59,7 +59,7 @@ class Guestbook:
         return greetings
 
     @classmethod
-    def get_page(cls, guestbook_name, pagesize, curs_str=None):
+    def get_page(cls, guestbook_name, pagesize, curs_str=None, content_filter=None):
         if pagesize <= 0:
             items = None
             nextcurs = None
@@ -67,22 +67,27 @@ class Guestbook:
         try:
             guestbook_key = Greeting.get_key_from_name(guestbook_name)
             curs = Cursor(urlsafe=curs_str)
-            items, nextcurs, more = Greeting.query(
-                ancestor=guestbook_key).order(-Greeting.date)\
-                .fetch_page(pagesize, start_cursor=curs)
+            query = Greeting.query(ancestor=guestbook_key)
+            if content_filter:
+                query = query.filter(Greeting.content == content_filter)
+            query = query.order(-Greeting.date)
+            items, nextcurs, more = query.fetch_page(pagesize, start_cursor=curs)
         except:
             items = None
             nextcurs = None
             more = None
+
         return items, nextcurs, more
 
     @classmethod
-    def get_total_count(cls, guestbook_name):
+    def get_total_count(cls, guestbook_name, content_filter=None):
         guestbook_key = Greeting.get_key_from_name(guestbook_name)
-        count = Greeting.query(
-                ancestor=guestbook_key).count()
+        query = Greeting.query(
+                ancestor=guestbook_key)
+        if content_filter:
+            query = query.filter(Greeting.content == content_filter)
 
-        return count
+        return query.count()
 
     @classmethod
     def put_greeting_with_data(cls, guestbook_name, greeting_author, greeting_content):

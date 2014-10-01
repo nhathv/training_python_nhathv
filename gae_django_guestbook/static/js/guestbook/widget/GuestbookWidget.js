@@ -1,10 +1,6 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dijit/_WidgetBase",
-	"dijit/_TemplatedMixin",
-	"dijit/_WidgetsInTemplateMixin",
-	'dijit/_Container',
 	"dojo/request",
 	"dojo/on",
 	"dojo/dom",
@@ -15,16 +11,27 @@ define([
 	"dojo/router",
 	"dojo/hash",
 	"dojo/topic",
+	"dojo/keys",
+	"dijit/_WidgetBase",
+	"dijit/_TemplatedMixin",
+	"dijit/_WidgetsInTemplateMixin",
+	'dijit/_Container',
 	"/static/js/guestbook/widget/GreetingWidget.js",
 	"/static/js/guestbook/widget/SignFormWidget.js",
 	"/static/js/guestbook/widget/models/GreetingStore.js",
 	"dojo/text!./templates/GuestbookWidget.html",
 	"/static/js/common/views/_ListViewMixin.js",
 	"/static/js/guestbook/widget/models/GreetingStoreSingleton.js",
-	"/static/js/guestbook/widget/models/app.js"
-], function(declare, lang, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _Container,
-			request, on, dom, domAttr, domConstruct, domStyle, arrayUtil, router, hash, topic,
-			GreetingWidget, SignFormWidget, GreetingStore, template, _ListViewMixin, GreetingStoreSingleton, appModel){
+	"/static/js/guestbook/widget/models/app.js",
+	// read only
+	"dijit/layout/BorderContainer",
+	"dijit/layout/TabContainer",
+	"dijit/layout/ContentPane"
+], function(declare, lang, request, on, dom, domAttr, domConstruct,
+			domStyle, arrayUtil, router, hash, topic, keys,
+			_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _Container,
+			GreetingWidget, SignFormWidget, GreetingStore, template,
+			_ListViewMixin, GreetingStoreSingleton, appModel){
 	return declare("guestbook.GuestbookWidget",
 		[_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _Container, _ListViewMixin], {
 		// Our template - important!
@@ -50,6 +57,7 @@ define([
 			this.inherited(arguments);
 
 			this.GreetingStore = new GreetingStore();
+			var thisObj = this;
 
 			// handle event
 			this.own(
@@ -59,7 +67,16 @@ define([
 					event.preventDefault();
 					var page = domAttr.get(this, "href");
 					hash(page);
-				})
+				}),
+				// set up ENTER keyhandling for the search keyword input field
+				on(this.searchInputNode, "keydown", function(event){
+					if(event.keyCode === keys.ENTER){
+						event.preventDefault();
+						thisObj.doSearch();
+					}
+				}),
+				// set up click handling for the search button
+				on(this.searchButtonNode, "click", lang.hitch(this, "doSearch"))
 			);
 			topic.subscribe("/dojo/hashchange", function(newHash){
 				hash(newHash);
@@ -71,8 +88,6 @@ define([
 				this._showListGreeting(this.guestbookName);
 			}
 			this._showSignGreetingForm();
-
-			var thisObj = this;
 
 			this.model.watch('route', function(name, oldValue, value) {
 				thisObj.renderScreen(value);
@@ -136,7 +151,11 @@ define([
 
 		fetchItems: function(options) {
 			console.log("fetchItems");
-			return this.store.query({guestbook_name: this.guestbookName, limit: this.itemPerPage}, options);
+			return this.store.query({
+				guestbook_name: this.guestbookName,
+				limit: this.itemPerPage,
+				contentFilter: ''
+			}, options);
 		},
 
 		getItemView: function(greeting) {
@@ -273,6 +292,10 @@ define([
 			}, function(progress){
 				console.log(progress);
 			});
+		},
+
+		doSearch: function(){
+			console.log("doSearch: " + this.searchInputNode.value);
 		}
 	});
 });

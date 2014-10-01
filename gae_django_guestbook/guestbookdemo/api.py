@@ -48,20 +48,26 @@ class APIListGreeting(JSONResponseMixin, FormView):
 										 AppConstants.get_default_guestbook_name())
 		cursor_str = self.request.GET.get('cursor', None)
 		limit = int(self.request.GET.get('limit', 10))
-		request_url = self.request.build_absolute_uri(self.request.path)
+		content_filter = self.request.GET.get('contentFilter', None)
 
 		# get list of Greeting, next_cursor, is_more
-		greetings, next_cursor, is_more = self.get_queryset(guestbook_name, limit, cursor_str)
+		greetings, next_cursor, is_more = self.get_queryset(guestbook_name,
+															limit,
+															cursor_str,
+															content_filter)
 
-		greetings_dict = [greeting.to_dict() for greeting in greetings]
+		if greetings:
+			greetings_dict = [greeting.to_dict() for greeting in greetings]
+		else:
+			greetings_dict = []
 
 		data = {}
-		# new response
 		data['items'] = greetings_dict
-		data['totalItems'] = Guestbook.get_total_count(guestbook_name)
+		data['totalItems'] = Guestbook.get_total_count(guestbook_name, content_filter)
 		data['hasNext'] = is_more
 		data['nextLink'] = None
 		if is_more:
+			request_url = self.request.build_absolute_uri(self.request.path)
 			data['nextLink'] = request_url \
 								+ "?cursor=" + next_cursor.urlsafe() \
 								+ "&limit=" +str(limit)
@@ -75,11 +81,12 @@ class APIListGreeting(JSONResponseMixin, FormView):
 	def get_queryset(self,
 					 guestbook_name=AppConstants.get_default_guestbook_name(),
 					 number_of_greeting=AppConstants.get_default_number_of_greeting(),
-					 curs_str=None):
+					 curs_str=None,
+					 content_filter=None):
 
 		greetings, nextcurs, more = Guestbook.get_page(guestbook_name,
 													   number_of_greeting,
-													   curs_str)
+													   curs_str, content_filter)
 
 		return greetings, nextcurs, more
 
