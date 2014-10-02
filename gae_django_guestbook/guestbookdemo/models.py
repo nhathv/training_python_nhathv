@@ -77,6 +77,14 @@ class Guestbook:
         return items, nextcurs, more
 
     @classmethod
+    def get_total_count(cls, guestbook_name):
+        guestbook_key = Greeting.get_key_from_name(guestbook_name)
+        count = Greeting.query(
+                ancestor=guestbook_key).count()
+
+        return count
+
+    @classmethod
     def put_greeting_with_data(cls, guestbook_name, greeting_author, greeting_content):
         guestbook_key = Greeting.get_key_from_name(guestbook_name)
 

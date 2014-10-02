@@ -10,17 +10,17 @@ define([
 ], function(declare, config, ready, hash, router, app, Route) {
 
 	router.register('list', function(evt) {
-		app.getDefaultInstance().set('route', new Route({
+		app.set('route', new Route({
 			screen: 'list'
 		}));
 	});
 	router.register('sign', function(evt) {
-		app.getDefaultInstance().set('route', new Route({
+		app.set('route', new Route({
 			screen: 'sign'
 		}));
 	});
 	router.register('/post/:guestbook_name/:id', function(evt) {
-		app.getDefaultInstance().set('route', new Route({
+		app.set('route', new Route({
 			screen: 'post',
 			greetingId: evt.params.id,
 			guestbookName: evt.params.guestbook_name
@@ -35,8 +35,8 @@ define([
 
 			router.startup();
 
-			if (!hash() || !(app.getDefaultInstance().get('route') instanceof Route)) {
-				app.getDefaultInstance().set('route', new Route({
+			if (!hash() || !(app.get('route') instanceof Route)) {
+				app.set('route', new Route({
 					screen: 'list'
 				}));
 			}

@@ -15,5 +15,5 @@ define([
 		return instance;
 	};
 
-	return app;
+	return app.getDefaultInstance();
 });

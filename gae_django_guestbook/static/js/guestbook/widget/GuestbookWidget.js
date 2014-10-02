@@ -38,8 +38,9 @@ define([
 		lastPage: "list",
 		autoPaging: 20,
 		store: GreetingStoreSingleton.getDefaultInstance(),
+		showedItems: 0,
 		
-		model: appModel.getDefaultInstance(),
+		model: appModel,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -68,9 +69,16 @@ define([
 			this._showSignGreetingForm();
 
 			var thisObj = this;
+
 			this.model.watch('route', function(name, oldValue, value) {
 				thisObj.renderScreen(value);
 			});
+
+			this.watch('showedItems', lang.hitch(this, function(name, oldValue, value) {
+				if (oldValue != value){
+					thisObj.updateShowedItems(value);
+				}
+			}));
 		},
 
 		renderScreen: function(value){
@@ -124,7 +132,7 @@ define([
 
 		fetchItems: function(options) {
 			console.log("fetchItems");
-			return this.store.query({guestbook_name: this.guestbookName}, options);
+			return this.store.query({guestbook_name: this.guestbookName, limit: this.autoPaging}, options);
 		},
 
 		getItemView: function(greeting) {
@@ -163,6 +171,18 @@ define([
 			return greetingWidget;
 		},
 
+		render: function(items) {
+			this.inherited(arguments);
+			var showedItems = this.get('showedItems', 0);
+			this.set('showedItems', showedItems + items.length);
+		},
+
+		updateShowedItems: function(count){
+			if (this.showedItemsNode) {
+				this.showedItemsNode.textContent = count;
+			}
+		},
+
 		_showListGreeting: function(guestbookName){
 			this.guestbookName = guestbookName;
 			this.loadItems({forceNew: true});
@@ -180,7 +200,8 @@ define([
 		},
 
 		_removeAllGreeting: function(){
-			this.containerNode.innerHTML = "";
+			this.clearItems();
+			this.set('showedItems', 0);
 		},
 
 		_setGuestbookNameAttr: function(guestbookName){
