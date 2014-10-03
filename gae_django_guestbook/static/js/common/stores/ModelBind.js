@@ -3,7 +3,7 @@ define([
 	'dojo/_base/array',
 	'dojo/_base/Deferred',
 	'dojo/store/util/QueryResults',
-	'/static/js/common/support/dojox/mvc/getStateful.js'
+	'dojox/mvc/getStateful'
 ], function(lang, array, Deferred, QueryResults, getStateful) {
 
 	return function(store, modelClass) {

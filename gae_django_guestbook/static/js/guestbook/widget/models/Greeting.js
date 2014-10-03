@@ -1,6 +1,6 @@
 define([
 	'dojo/_base/declare',
-	'/static/js/common/support/dojo/Stateful.js'
+	'dojo/Stateful'
 ], function(declare, Stateful) {
 
 	return declare(Stateful, {

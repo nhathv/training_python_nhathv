@@ -3,7 +3,7 @@ define([
 	'dojo/_base/lang',
 	'dojo/_base/url',
 	'dojo/io-query',
-	'/static/js/common/support/dojo/Stateful.js'
+	'dojo/Stateful'
 ], function(declare, lang, url, ioQuery, Stateful) {
 
 	return declare(Stateful, {
