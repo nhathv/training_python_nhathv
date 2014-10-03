@@ -36,7 +36,8 @@ define([
 		guestbookName: "default_guestbook",
 		// store the last requested page so we do not make multiple requests for the same content
 		lastPage: "list",
-		autoPaging: 20,
+		autoPaging: 50,// distance of scroll and last item in showing list
+		itemPerPage: 10,
 		store: GreetingStoreSingleton.getDefaultInstance(),
 		showedItems: 0,
 		
@@ -132,7 +133,7 @@ define([
 
 		fetchItems: function(options) {
 			console.log("fetchItems");
-			return this.store.query({guestbook_name: this.guestbookName, limit: this.autoPaging}, options);
+			return this.store.query({guestbook_name: this.guestbookName, limit: this.itemPerPage}, options);
 		},
 
 		getItemView: function(greeting) {
