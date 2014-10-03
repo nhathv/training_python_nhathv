@@ -154,7 +154,7 @@ define([
 			return this.store.query({
 				guestbook_name: this.guestbookName,
 				limit: this.itemPerPage,
-				contentFilter: ''
+				contentFilter: this.searchInputNode.value
 			}, options);
 		},
 
@@ -295,7 +295,7 @@ define([
 		},
 
 		doSearch: function(){
-			console.log("doSearch: " + this.searchInputNode.value);
+			this.reloadListGreeting(this.guestbookName);
 		}
 	});
 });
