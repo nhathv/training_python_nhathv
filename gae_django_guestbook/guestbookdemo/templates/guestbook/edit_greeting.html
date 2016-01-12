@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title></title>
-</head>
-<body>
-    ============================
-     <form action="/edit/" method="post">
-      {% csrf_token %}
-        {{ form.as_p }}
-      <div><input name="save_greeting" type="submit" value="Save"></div>
-    </form>
-</body>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		============================
+		<form action="/edit/" method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<div><input name="save_greeting" type="submit" value="Save"></div>
+		</form>
+	</body>
 </html>

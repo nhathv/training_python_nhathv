@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8" />
-	<title>Gadget Local</title>
-	<style type="text/css">
-	body {
-		margin: 0;
-		padding: 0;
-	}
-	body > div {
-		height: 100%;
-	}
-	</style>
-	<!-- sites環境の再現 -->
-	<style type="text/css">body,td,div,span,p{font-family:arial,sans-serif;}a {color:#0000cc;}a:visited {color:#551a8b;}a:active {color:#ff0000;}body{margin: 0px;padding: 0px;background-color:white;}</style>
-</head>
-<body class="bank {{ gadget_lang }}">
-<script type="text/javascript">
-var __LANG__ = '{{ gadget_lang|escapejs }}';
-</script>
-<script type="text/javascript" src="/static/js/guestbook/gadget/stubs/gadgets.stub.js"></script>
-{{ gadget_body|safe }}
-</body>
+	<head>
+		<meta charset="utf-8" />
+		<title>Gadget Local</title>
+		<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		body > div {
+			height: 100%;
+		}
+		</style>
+		<!-- sites環境の再現 -->
+		<style type="text/css">body,td,div,span,p{font-family:arial,sans-serif;}a {color:#0000cc;}a:visited {color:#551a8b;}a:active {color:#ff0000;}body{margin: 0px;padding: 0px;background-color:white;}</style>
+	</head>
+	<body class="bank {{ gadget_lang }}">
+		<script type="text/javascript">
+		var __LANG__ = '{{ gadget_lang|escapejs }}';
+		</script>
+		<script type="text/javascript" src="/static/js/guestbook/gadget/stubs/gadgets.stub.js"></script>
+		{{ gadget_body|safe }}
+	</body>
 </html>

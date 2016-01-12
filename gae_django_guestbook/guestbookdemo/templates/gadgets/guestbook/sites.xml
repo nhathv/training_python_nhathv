@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-    <ModulePrefs title="Gadget x" />
-    <Require feature="opensocial-0.9" />
+	<ModulePrefs title="Gadget x" />
+	<Require feature="opensocial-0.9" />
 	<Require feature="osapi" />
-    <Content type="html" preferred_height="440"><![CDATA[
+	<Content type="html" preferred_height="440"><![CDATA[
     <!DOCTYPE html>
 <html>
 <head>

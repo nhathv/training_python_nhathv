@@ -1,46 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Dojo guestbook</title>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css" />
-    <link type="text/css" rel="stylesheet" href="/static/js/guestbook/widget/css/GreetingWidget.css" />
-</head>
-<body>
-<h1>Guestbook</h1>
-<div id="greetingContainer"></div>
-<!-- Configure Dojo -->
-<script>
-    var dojoConfig = (function(){
-        return {
-            async: true,
-            isDebug: true,
-            parseOnLoad : true,
-            packages: [{
-                name: "myGuestbook",
-                location: "/static/js/guestbook"
-            }]
-        };
-    })();
-</script>
-<div data-dojo-type="guestbook.GuestbookWidget"></div>
-<script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>
-<script type="text/javascript">
-    require([
-        "dojo/parser",
-        "dojo/_base/config",
-        "myGuestbook/widget/GuestbookWidget",
-        "dojo/domReady!"
-    ], function(parser, config){
-        if (!config.parseOnLoad) {
-            parser.parse();
-        }
-    });
-</script>
-<br>
-<input id="is_user_admin" value="{{ is_user_admin }}" type="hidden"/>
-<input id="user_login" value="{{ user_login }}" type="hidden"/>
-<br>
-<br>
-<a href="{{ url }}">{{ url_linktext }}</a>
-</body>
+	<head>
+		<title>Dojo guestbook</title>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css" />
+		<link type="text/css" rel="stylesheet" href="/static/js/guestbook/widget/css/GreetingWidget.css" />
+	</head>
+	<body>
+		<h1>Guestbook</h1>
+		<div id="greetingContainer"></div>
+		<!-- Configure Dojo -->
+		<script>
+			var dojoConfig = (function(){
+				return {
+					async: true,
+					isDebug: true,
+					parseOnLoad : true,
+		{#			baseUrl: '/static/js/dojo/dojo',#}
+					packages: [{
+						name: "myGuestbook",
+						location: "/static/js/guestbook"
+					}]
+				};
+			})();
+		</script>
+		<div data-dojo-type="guestbook.GuestbookWidget"></div>
+		<!--<script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.0/dojo/dojo.js"></script>-->
+		<script src="/static/js/dojo/dojo/dojo.js"></script>
+		<script type="text/javascript">
+			require([
+				"dojo/parser",
+				"dojo/_base/config",
+				"myGuestbook/widget/GuestbookWidget",
+				"dojo/domReady!"
+			], function(parser, config){
+				if (!config.parseOnLoad) {
+					parser.parse();
+				}
+			});
+		</script>
+		<br>
+		<input id="is_user_admin" value="{{ is_user_admin }}" type="hidden"/>
+		<input id="user_login" value="{{ user_login }}" type="hidden"/>
+		<br>
+		<br>
+		<a href="{{ url }}">{{ url_linktext }}</a>
+	</body>
 </html>
