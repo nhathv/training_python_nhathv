@@ -1,0 +1,12 @@
+<div>
+	<input type="text" value="" required="true" hidden="true"
+	       data-dojo-attach-point="guestbookNameNode"/>
+	<input type="text" value="" required="true"
+	       data-dojo-attach-point="contentNode"
+	       data-dojo-type="dijit/form/ValidationTextBox"
+	       data-dojo-props="pattern:'.{10}', invalidMessage:'Max of content is 10 chars.'"/>
+	<button value="Sign"
+	        data-dojo-type="dijit/form/Button"
+	        data-dojo-attach-point="signButtonNode">Sign
+	</button>
+</div>

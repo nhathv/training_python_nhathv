@@ -1,0 +1,35 @@
+<div>
+	<div>
+		<ul id="menu">
+			<li><a href="list">Greetings</a></li>
+			<li><a href="sign">Sign</a></li>
+		</ul>
+	</div>
+	<br>
+	<br>
+	<span style="color: green">============= SIGN GUESTBOOK ===============</span>
+	<br>
+	<div data-dojo-attach-point="signFormContainerNode" id="signFormContainerNodeId"></div>
+	<br>
+	<span style="color: red">============= GREETING ===============</span>
+	<br>
+	<div data-dojo-attach-point="greetingDetailNode" id="greetingDetailNodeId"></div>
+	<br>
+	============================================
+	<br>
+	<span style="color: blue">============= SWITCH GUESTBOOK =============</span>
+	<br>
+	<input type="text" value="" required="true"
+	       data-dojo-attach-point="guestbookNameNode"
+	       data-dojo-type="dijit/form/ValidationTextBox"
+	       data-dojo-props="pattern:'.{20}', invalidMessage:'Max of content is 20 chars.'"/>
+	<button value="Switch"
+	        data-dojo-attach-point="switchButtonNode"
+	        data-dojo-type="dijit/form/Button">Switch
+	</button>
+	<br>
+	<span style="color: darkviolet">============== LIST GUESTBOOK ==============</span>
+	<div data-dojo-attach-point="greetingsContainerNode" id="greetingsContainerNodeId"></div>
+	<br>
+	============================================
+</div>

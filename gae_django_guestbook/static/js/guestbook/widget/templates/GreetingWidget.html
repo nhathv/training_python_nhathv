@@ -1,0 +1,27 @@
+<div>
+	<input type="text" required="true" hidden="true" value="${id_greeting}"
+	       data-dojo-attach-point="greetingIdNode"/>
+	<h6 data-dojo-attach-point="createDateNode">${date}</h6>
+	<h3 data-dojo-attach-point="authorNode">${author} wrote:</h3>
+	<p type="text" value="${content}" required="true" autoSave="false" disabled="true"
+	   data-dojo-type="dijit/InlineEditBox"
+	   data-dojo-attach-point="contentNode"
+	   data-dojo-props="editor:'dijit/form/ValidationTextBox',
+                        autoSave: false,
+                        editorParams: {maxLength: 10,
+                                       required: true,
+                                       autoSave: false,
+                                       invalidMessage:'Max of content is 10 chars.'}"/>
+	<div></div>
+	<button value="Detail"
+	        data-dojo-type="dijit/form/Button"
+	        data-dojo-attach-point="detailButtonNode">Detail
+	</button>
+	<div></div>
+	<h6 data-dojo-attach-point="updatedByNode">Updated by: ${updated_by}</h6>
+	<h6 data-dojo-attach-point="updatedDateNode">Updated date: ${updated_date}</h6>
+	<button value="Delete" style="visibility: hidden;"
+	        data-dojo-type="dijit/form/Button"
+	        data-dojo-attach-point="deleteButtonNode">Delete
+	</button>
+</div>

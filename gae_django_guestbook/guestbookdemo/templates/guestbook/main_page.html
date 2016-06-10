@@ -1,0 +1,47 @@
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="/static/stylesheets/main.css"/>
+</head>
+<body>
+{% for greeting in greetings %}
+	{% if greeting.author %}
+		<b>{{ greeting.author }}</b> wrote:
+	{% else %}
+		An anonymous person wrote:
+	{% endif %}
+	<blockquote>{{ greeting.content|escape }}</blockquote>
+	{% if greeting.updated_by %}
+		Updated by: {{ greeting.updated_by }}
+		<br>
+		Updated date: {{ greeting.updated_date }}
+	{% endif %}
+	<br>
+	{% if user_login %}
+		{% if is_user_admin %}
+			<a href="/delete/?action=delete-message&guestbook_name={{ guestbook_name }}&greeting_id={{ greeting.key.id }}">Delete</a>
+		{% endif %}
+		{% if is_user_admin or user_login.nickname == greeting.author %}
+			<a href="/edit/?action=edit-message&guestbook_name={{ guestbook_name }}&greeting_id={{ greeting.key.id }}">Edit</a>
+		{% endif %}
+	{% endif %}
+	<br>
+	******************
+	<br>
+{% endfor %}
+============================
+<form action="/sign_guestbook/" method="post">
+	{% csrf_token %}
+	{{ sign_guestbook_form.as_p }}
+	<div><input name="sign_guestbook" type="submit" value="Sign Guestbook"></div>
+</form>
+
+<a href="{{ url }}">{{ url_linktext }}</a>
+</br>
+============================
+<form action="/switch_guestbook/" method="post">
+	{% csrf_token %}
+	{{ switch_guestbook_form.as_p }}
+	<div><input name="switch_guestbook" type="submit" value="Switch guestbook"></div>
+</form>
+</body>
+</html>
